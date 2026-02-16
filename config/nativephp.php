@@ -15,7 +15,7 @@ return [
      */
     'app_id' => ('com.checkgastos.app'),
 
-    'name' => 'CheckGastos',
+    'name' => 'CheckDespesas',
 
     /**
      * If your application allows deep linking, you can specify the scheme

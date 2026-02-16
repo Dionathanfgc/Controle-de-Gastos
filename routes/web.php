@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('monthly-tabels/categories/{id}', [MonthlyTabelController::class, 'updateCategory'])->name('monthly-tabels.categories.update');
     Route::delete('monthly-tabels/categories/{id}', [MonthlyTabelController::class, 'deleteCategory'])->name('monthly-tabels.categories.destroy');
     Route::post('monthly-tabels/entries', [MonthlyTabelController::class, 'storeEntry'])->name('monthly-tabels.entries.store');
+    Route::post('monthly-tabels/save-selected', [MonthlyTabelController::class, 'saveSelectedTable'])->name('monthly-tabels.save-selected');
+    Route::get('monthly-tabels/get-selected', [MonthlyTabelController::class, 'getSelectedTable'])->name('monthly-tabels.get-selected');
 });
 
 require __DIR__.'/settings.php';

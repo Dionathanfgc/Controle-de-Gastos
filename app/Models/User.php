@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'selected_table_id',
     ];
 
     /**
@@ -48,5 +49,13 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Obter a tabela mensal selecionada pelo usuário
+     */
+    public function selectedTable()
+    {
+        return $this->belongsTo(MonthlyTabel::class, 'selected_table_id');
     }
 }

@@ -19,10 +19,20 @@ class DashboardController extends Controller
 
         if ($request->query('table')) {
             $selected = $tables->firstWhere('id', $request->query('table'));
+            // Salvar a tabela selecionada no banco de dados
+            if ($selected) {
+                $user->update(['selected_table_id' => $selected->id]);
+            }
+        } else {
+            // Usar a tabela selecionada do banco de dados
+            if ($user->selected_table_id) {
+                $selected = $tables->firstWhere('id', $user->selected_table_id);
+            }
         }
 
         if (!$selected && $tables->isNotEmpty()) {
             $selected = $tables->first();
+            $user->update(['selected_table_id' => $selected->id]);
         }
 
         if ($selected) {

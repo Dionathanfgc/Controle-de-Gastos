@@ -15,6 +15,7 @@ class Category extends Model
         'monthly_tabel_id',
         'name',
         'type',
+        'expense_type',
     ];
 
     public function monthlyTable()

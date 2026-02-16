@@ -1,0 +1,27 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        // Apenas dropa a coluna se ela existir
+        if (Schema::hasColumn('categories', 'income_type')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->dropColumn('income_type');
+            });
+        }
+    }
+
+    public function down()
+    {
+        if (!Schema::hasColumn('categories', 'income_type')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->enum('income_type', ['receipt', 'investment'])->nullable()->after('expense_type');
+            });
+        }
+    }
+};

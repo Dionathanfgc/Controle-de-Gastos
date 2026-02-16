@@ -30,24 +30,18 @@ export default function Dashboard() {
         }).format(value);
     };
 
+    // Atualizar selectedTable quando selected muda
     useEffect(() => {
-        if (selected) {
-            setSelectedTable(selected);
-            localStorage.setItem('lastSelectedTableId', String(selected.id));
-        }
+        setSelectedTable(selected);
     }, [selected]);
 
-    const handleTableChange = (e: any) => {
-        const tableId = e.currentTarget.value;
-        window.location.href = `/dashboard?table=${tableId}`;
-    };
 
     if (!dashboardData) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
                 <Head title="Dashboard" />
                 <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                    <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded">
+                    <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-400 dark:border-yellow-600 text-yellow-700 dark:text-yellow-300 px-4 py-3 rounded">
                         Nenhuma tabela disponível. Crie uma nova tabela para começar.
                     </div>
                 </div>
@@ -59,23 +53,31 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                {/* Seletor de Tabela */}
-                <div className="flex items-center gap-4">
+                {/* Título e Seletor de Tabela */}
+                <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-bold">Dashboard</h1>
-                    <select
-                        value={selectedTable?.id ?? ''}
-                        onChange={handleTableChange}
-                        className="px-3 py-2 border rounded text-black"
-                    >
-                        {tables.map((t: any) => (
-                            <option key={t.id} value={t.id}>
-                                {t.name ?? t.year}
-                            </option>
-                        ))}
-                    </select>
+                    {tables.length > 0 && (
+                        <select
+                            value={selectedTable?.id || ''}
+                            onChange={(e) => {
+                                const tableId = e.target.value;
+                                if (tableId) {
+                                    window.location.href = `/dashboard?table=${tableId}`;
+                                }
+                            }}
+                            className="px-3 py-2 border rounded border-sidebar-border/70 dark:border-sidebar-border bg-white dark:bg-slate-950 text-gray-900 dark:text-white"
+                        >
+                            <option value="">Selecionar tabela...</option>
+                            {tables.map((table: any) => (
+                                <option key={table.id} value={table.id}>
+                                    {table.name || `Tabela ${table.year}`}
+                                </option>
+                            ))}
+                        </select>
+                    )}
                 </div>
 
-                {/* Cards com Renda, Gasto e Saldo */}
+                {/* Cards com Renda, Despesa e Saldo */}
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     {/* Card Renda */}
                     <div className="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border bg-blue-50 dark:bg-blue-900/20 p-6">
@@ -87,10 +89,10 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Card Gasto */}
+                    {/* Card Despesa */}
                     <div className="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border bg-red-50 dark:bg-red-900/20 p-6">
                         <div className="flex flex-col gap-2">
-                            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Gasto Total</h3>
+                            <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400">Despesa Total</h3>
                             <p className="text-3xl font-bold text-red-600 dark:text-red-400">
                                 {formatCurrency(dashboardData.totalExpense)}
                             </p>
@@ -116,11 +118,11 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Gráfico de Gastos */}
-                <div className="min-h-[400px] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border bg-white dark:bg-slate-950 p-6">
+                {/* Gráfico de Despesas */}
+                <div className="min-h-96 flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border bg-white dark:bg-slate-950 p-6">
                     {dashboardData.categoryExpenses.length > 0 ? (
                         <div className="flex flex-col gap-4">
-                            <h2 className="text-xl font-bold text-gray-800 dark:text-white">Gastos por Categoria</h2>
+                            <h2 className="text-xl font-bold text-gray-800 dark:text-white">Despesas por Categoria</h2>
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
                                     <Pie
@@ -143,8 +145,8 @@ export default function Dashboard() {
                             </ResponsiveContainer>
                         </div>
                     ) : (
-                        <div className="flex items-center justify-center h-full text-gray-500">
-                            <p>Nenhum gasto registrado ainda.</p>
+                        <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                            <p>Nenhuma despesa registrada ainda.</p>
                         </div>
                     )}
                 </div>
