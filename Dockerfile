@@ -19,14 +19,12 @@ COPY . /var/www/html
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# --- O PULO DO GATO: Build do Vite dentro do Docker ---
-RUN npm install
-RUN npm run build
-# ------------------------------------------------------
-
-# Permissões
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public && \
+# Permissões e diretórios e diretórios
+RUN mkdir -p /var/www/html/storage/logs && \
+    mkdir -p /var/www/html/storage/app && \
+    mkdir -p /var/www/html/bootstrap/cache && \
+    chown -R www-data:www-data /var/www/html && \
+    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public && \
     chmod +x /var/www/html/docker/start.sh
 
 COPY ./docker/nginx.conf /etc/nginx/http.d/default.conf
