@@ -19,6 +19,11 @@ COPY . /var/www/html
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
+# --- Build do Vite dentro do Docker ---
+RUN npm install
+RUN npm run build
+# ----------------------------------------
+
 # Permissões e diretórios e diretórios
 RUN mkdir -p /var/www/html/storage/logs && \
     mkdir -p /var/www/html/storage/app && \
