@@ -15,6 +15,9 @@ RUN apk add --no-cache \
 WORKDIR /var/www/html
 COPY . /var/www/html
 
+# Use production environment file if it exists
+RUN if [ -f .env.production ]; then cp .env.production .env; fi
+
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
