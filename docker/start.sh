@@ -49,6 +49,12 @@ FINALENV
     fi
 fi
 
+# Para TiDB (produção), adicionar configuração de SSL ANTES de qualquer comando Laravel
+if [ ! -z "$DB_HOST" ] && grep -q "tidbcloud.com" <<< "$DB_HOST" 2>/dev/null; then
+    echo "" >> /var/www/html/.env
+    echo "MYSQL_ATTR_SSL_VERIFY_SERVER_CERT=false" >> /var/www/html/.env
+fi
+
 # Criar diretórios necessários
 mkdir -p /var/www/html/storage/logs
 mkdir -p /var/www/html/bootstrap/cache
@@ -59,15 +65,9 @@ chmod -R 777 /var/www/html/storage
 chmod -R 777 /var/www/html/bootstrap/cache
 chmod 666 /var/www/html/storage/logs/laravel.log 2>/dev/null || true
 
-# Limpar cache
+# Limpar cache (ignorar erros em caso de problema no banco)
 php artisan config:clear > /dev/null 2>&1 || true
 php artisan cache:clear > /dev/null 2>&1 || true
-
-# Para TiDB (produção), adicionar configuração de SSL ao final do .env
-if [ ! -z "$DB_HOST" ] && grep -q "tidbcloud.com" <<< "$DB_HOST" 2>/dev/null; then
-    echo "" >> /var/www/html/.env
-    echo "MYSQL_ATTR_SSL_VERIFY_SERVER_CERT=false" >> /var/www/html/.env
-fi
 
 # Executar migrations (ignorar erros)
 php artisan migrate --force > /dev/null 2>&1 || true
