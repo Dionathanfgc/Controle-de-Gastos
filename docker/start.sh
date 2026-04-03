@@ -4,36 +4,73 @@ set -e
 
 cd /var/www/html
 
-# Copiar .env.production se existir (para builds locais)
+# Se existir .env.production, usar ele
 if [ -f .env.production ]; then
     cp .env.production .env
 else
-    # Se não existir .env.production, criar um a partir do .env.example se .env não existir  
+    # Gerar .env a partir do .env.example e sobrescrever com variáveis de ambiente
     if [ ! -f .env ]; then
         cp .env.example .env
     fi
     
-    # Sobrescrever variáveis de produção com valores do Cloud Run (se definidas)
-    if [ ! -z "$APP_ENV" ]; then
-        sed -i "s/APP_ENV=.*/APP_ENV=$APP_ENV/" .env
-    fi
-    if [ ! -z "$APP_DEBUG" ]; then
-        sed -i "s/APP_DEBUG=.*/APP_DEBUG=$APP_DEBUG/" .env
-    fi
-    if [ ! -z "$DB_HOST" ]; then
-        sed -i "s/DB_HOST=.*/DB_HOST=$DB_HOST/" .env
-    fi
-    if [ ! -z "$DB_PORT" ]; then
-        sed -i "s/DB_PORT=.*/DB_PORT=$DB_PORT/" .env
-    fi
-    if [ ! -z "$DB_USERNAME" ]; then
-        sed -i "s/DB_USERNAME=.*/DB_USERNAME=$DB_USERNAME/" .env
-    fi
-    if [ ! -z "$DB_PASSWORD" ]; then
-        sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=$DB_PASSWORD|" .env
-    fi
-    if [ ! -z "$APP_URL" ]; then
-        sed -i "s|APP_URL=.*|APP_URL=$APP_URL|" .env
+    # Criar arquivo .env novo com variáveis de ambiente (para Cloud Run)
+    cat > /tmp/env_overrides.txt << 'ENVFILE'
+APP_NAME=${APP_NAME:-Laravel}
+APP_ENV=${APP_ENV:-local}
+APP_DEBUG=${APP_DEBUG:-false}
+APP_KEY=${APP_KEY:-base64:A4+C7M6pRy63G01d+7SbqciCb37lsuDeXwSvaE4h0mo=}
+APP_URL=${APP_URL:-http://localhost}
+DB_CONNECTION=${DB_CONNECTION:-mysql}
+DB_HOST=${DB_HOST:-mysql}
+DB_PORT=${DB_PORT:-3306}
+DB_DATABASE=${DB_DATABASE:-controle_de_gastos}
+DB_USERNAME=${DB_USERNAME:-sail}
+DB_PASSWORD=${DB_PASSWORD:-password}
+SESSION_DRIVER=${SESSION_DRIVER:-database}
+BROADCAST_CONNECTION=${BROADCAST_CONNECTION:-log}
+FILESYSTEM_DISK=${FILESYSTEM_DISK:-local}
+QUEUE_CONNECTION=${QUEUE_CONNECTION:-database}
+CACHE_STORE=${CACHE_STORE:-database}
+LOG_CHANNEL=${LOG_CHANNEL:-stack}
+LOG_LEVEL=${LOG_LEVEL:-debug}
+REDIS_HOST=${REDIS_HOST:-127.0.0.1}
+REDIS_PORT=${REDIS_PORT:-6379}
+MAIL_MAILER=${MAIL_MAILER:-log}
+VITE_APP_NAME=${VITE_APP_NAME:-Laravel}
+ENVFILE
+
+    # Se estamos em produção, sobrescrever com valores reais
+    if [ "$APP_ENV" = "production" ] || [ ! -z "$DB_HOST" ] && [ "$DB_HOST" != "mysql" ]; then
+        cat > .env << FINALENV
+APP_NAME=${APP_NAME:-Laravel}
+APP_ENV=${APP_ENV:-production}
+APP_DEBUG=${APP_DEBUG:-false}
+APP_KEY=${APP_KEY:-base64:A4+C7M6pRy63G01d+7SbqciCb37lsuDeXwSvaE4h0mo=}
+APP_URL=${APP_URL:-https://checkgastos-1083277186891.us-central1.run.app}
+
+LOG_CHANNEL=${LOG_CHANNEL:-stack}
+LOG_LEVEL=${LOG_LEVEL:-warning}
+
+DB_CONNECTION=${DB_CONNECTION:-mysql}
+DB_HOST=${DB_HOST:-mysql}
+DB_PORT=${DB_PORT:-3306}
+DB_DATABASE=${DB_DATABASE:-controle_de_gastos}
+DB_USERNAME=${DB_USERNAME:-sail}
+DB_PASSWORD=${DB_PASSWORD:-password}
+
+SESSION_DRIVER=${SESSION_DRIVER:-database}
+BROADCAST_CONNECTION=${BROADCAST_CONNECTION:-log}
+FILESYSTEM_DISK=${FILESYSTEM_DISK:-local}
+QUEUE_CONNECTION=${QUEUE_CONNECTION:-database}
+CACHE_STORE=${CACHE_STORE:-database}
+
+REDIS_HOST=${REDIS_HOST:-127.0.0.1}
+REDIS_PORT=${REDIS_PORT:-6379}
+
+MAIL_MAILER=${MAIL_MAILER:-log}
+
+VITE_APP_NAME=${VITE_APP_NAME:-Laravel}
+FINALENV
     fi
 fi
 
