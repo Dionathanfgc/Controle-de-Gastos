@@ -2,8 +2,6 @@
 
 set -e
 
-cd /var/www/html
-
 # Criar diretórios necessários
 mkdir -p /var/www/html/storage/logs
 mkdir -p /var/www/html/bootstrap/cache
@@ -11,8 +9,6 @@ mkdir -p /var/www/html/bootstrap/cache
 # Permissões
 chmod -R 777 /var/www/html/storage
 chmod -R 777 /var/www/html/bootstrap/cache
-touch /var/www/html/storage/logs/laravel.log
-chmod 666 /var/www/html/storage/logs/laravel.log 2>/dev/null || true
 
 # Limpar cache
 php artisan config:clear > /dev/null 2>&1 || true
