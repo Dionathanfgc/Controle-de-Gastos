@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+# Criar diretórios necessários
+mkdir -p /var/www/html/storage/logs
+mkdir -p /var/www/html/bootstrap/cache
+
+# Permissões
+chmod -R 777 /var/www/html/storage
+chmod -R 777 /var/www/html/bootstrap/cache
+
+# Limpar cache
+php artisan config:clear > /dev/null 2>&1 || true
+php artisan cache:clear > /dev/null 2>&1 || true
+
+# Executar migrations (ignorar erros)
+php artisan migrate --force > /dev/null 2>&1 || true
+
+# Iniciar PHP-FPM em background
+php-fpm -D
+
+# Aguardar PHP-FPM estar pronto
+sleep 2
+
+# Iniciar Nginx em foreground
+exec nginx -g 'daemon off;'

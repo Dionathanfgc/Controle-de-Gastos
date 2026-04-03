@@ -251,7 +251,7 @@ export default function MonthlyTabels() {
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => setShowCreateTable(!showCreateTable)}
-                            className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded font-bold text-lg"
+                            className="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded font-bold text-lg"
                         >
                             + Nova Tabela
                         </button>
@@ -322,7 +322,7 @@ export default function MonthlyTabels() {
                                 </button>
                             </div>
                             <input name="name" value={newTableName} onChange={(e) => setNewTableName(e.target.value)} placeholder="Nome da tabela (opcional)" className="col-span-1 px-3 py-2 border rounded border-sidebar-border/70 dark:border-sidebar-border bg-white dark:bg-slate-950 text-gray-900 dark:text-white" />
-                            <button type="submit" className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">Criar Tabela</button>
+                            <button type="submit" className="bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded">Criar Tabela</button>
                         </div>
                     </form>
                 )}
@@ -426,13 +426,13 @@ export default function MonthlyTabels() {
                                         <th key={idx} className="px-3 py-3 text-right min-w-24">{month.slice(0, 3).toUpperCase()}</th>
                                     ))}
                                     <th className="px-3 py-3 text-right min-w-24 bg-blue-600 dark:bg-blue-700 font-bold border-l-2 border-blue-400 dark:border-blue-500">MÊS ATUAL</th>
-                                    <th className="px-3 py-3 text-right min-w-24 bg-purple-600 dark:bg-purple-700 font-bold border-l-2 border-purple-400 dark:border-purple-500">TOTAL ANO</th>
+                                    <th className="px-3 py-3 text-right min-w-24 bg-blue-800 dark:bg-blue-900 font-bold border-l-2 border-blue-600 dark:border-blue-700">TOTAL ANO</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {/* Seção RENDA */}
                                 <tr 
-                                    className="bg-green-900 dark:bg-green-950 text-white font-bold cursor-pointer hover:bg-green-800 dark:hover:bg-green-900"
+                                    className="bg-gray-600 dark:bg-gray-700 text-white font-bold cursor-pointer hover:bg-gray-500 dark:hover:bg-gray-600"
                                     onClick={() => setAddCategoryModal({ type: 'income' })}
                                 >
                                     <td colSpan={15} className="px-4 py-3">RENDA</td>
@@ -440,7 +440,7 @@ export default function MonthlyTabels() {
                                 {(monthlyData as MonthlyData).income.categories.map((cat: any) => (
                                     <tr key={`income-${cat.id}`} className="border-b border-sidebar-border/70 dark:border-sidebar-border hover:bg-gray-50 dark:hover:bg-slate-800/50">
                                         <td 
-                                            className="px-4 py-3 font-medium cursor-pointer text-gray-900 dark:text-gray-100 hover:text-green-600 dark:hover:text-green-400"
+                                            className="px-4 py-3 font-medium cursor-pointer text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
                                             onClick={() => setCategoryMenu({ catId: cat.id, catName: cat.name })}
                                         >
                                             {cat.name}
@@ -448,7 +448,7 @@ export default function MonthlyTabels() {
                                         {cat.monthlyTotals.map((total: number, idx: number) => (
                                             <td 
                                                 key={idx} 
-                                                className="px-3 py-3 text-right text-sm cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-green-100 dark:hover:bg-green-900/30"
+                                                className="px-3 py-3 text-right text-sm cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-blue-100 dark:hover:bg-blue-900/30"
                                                 onClick={() => handleCellEdit(cat.id, idx, total)}
                                             >
                                                 {editingCell?.catId === cat.id && editingCell?.monthIdx === idx ? (
@@ -473,12 +473,12 @@ export default function MonthlyTabels() {
                                         <td className="px-3 py-3 text-right text-sm font-bold bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-blue-400 dark:border-blue-500">
                                             {formatCurrency(cat.monthlyTotals[currentMonthIndex] || 0)}
                                         </td>
-                                        <td className="px-3 py-3 text-right text-sm font-bold bg-purple-50 dark:bg-purple-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-purple-400 dark:border-purple-500">
+                                        <td className="px-3 py-3 text-right text-sm font-bold bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-blue-400 dark:border-blue-500">
                                             {formatCurrency(cat.monthlyTotals.reduce((sum: number, val: number) => sum + val, 0))}
                                         </td>
                                     </tr>
                                 ))}
-                                <tr className="bg-green-700 dark:bg-green-800 text-white font-bold">
+                                <tr className="bg-gray-500 dark:bg-gray-600 text-white font-bold">
                                     <td className="px-4 py-3">TOTAL RENDA</td>
                                     {(monthlyData as MonthlyData).income.totals.map((total: number, idx: number) => (
                                         <td key={idx} className="px-3 py-3 text-right">{formatCurrency(total)}</td>
@@ -486,7 +486,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-3 text-right bg-blue-600 dark:bg-blue-700 border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).income.totals[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).income.totals.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -539,7 +539,7 @@ export default function MonthlyTabels() {
                                         <td className="px-3 py-3 text-right text-sm font-bold bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-blue-400 dark:border-blue-500">
                                             {formatCurrency(cat.monthlyTotals[currentMonthIndex] || 0)}
                                         </td>
-                                        <td className="px-3 py-3 text-right text-sm font-bold bg-purple-50 dark:bg-purple-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-purple-400 dark:border-purple-500">
+                                        <td className="px-3 py-3 text-right text-sm font-bold bg-blue-800 dark:bg-blue-900 text-white border-l-2 border-blue-600 dark:border-blue-700">
                                             {formatCurrency(cat.monthlyTotals.reduce((sum: number, val: number) => sum + val, 0))}
                                         </td>
                                     </tr>
@@ -552,7 +552,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-2 text-right bg-blue-600 dark:bg-blue-700 border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).expense.fixed.totals[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-2 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-2 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).expense.fixed.totals.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -599,7 +599,7 @@ export default function MonthlyTabels() {
                                         <td className="px-3 py-3 text-right text-sm font-bold bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-blue-400 dark:border-blue-500">
                                             {formatCurrency(cat.monthlyTotals[currentMonthIndex] || 0)}
                                         </td>
-                                        <td className="px-3 py-3 text-right text-sm font-bold bg-purple-50 dark:bg-purple-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-purple-400 dark:border-purple-500">
+                                        <td className="px-3 py-3 text-right text-sm font-bold bg-blue-800 dark:bg-blue-900 text-white border-l-2 border-blue-600 dark:border-blue-700">
                                             {formatCurrency(cat.monthlyTotals.reduce((sum: number, val: number) => sum + val, 0))}
                                         </td>
                                     </tr>
@@ -612,7 +612,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-2 text-right bg-blue-600 dark:bg-blue-700 border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).expense.variable.totals[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-2 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-2 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).expense.variable.totals.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -659,7 +659,7 @@ export default function MonthlyTabels() {
                                         <td className="px-3 py-3 text-right text-sm font-bold bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-blue-400 dark:border-blue-500">
                                             {formatCurrency(cat.monthlyTotals[currentMonthIndex] || 0)}
                                         </td>
-                                        <td className="px-3 py-3 text-right text-sm font-bold bg-purple-50 dark:bg-purple-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-purple-400 dark:border-purple-500">
+                                        <td className="px-3 py-3 text-right text-sm font-bold bg-blue-800 dark:bg-blue-900 text-white border-l-2 border-blue-600 dark:border-blue-700">
                                             {formatCurrency(cat.monthlyTotals.reduce((sum: number, val: number) => sum + val, 0))}
                                         </td>
                                     </tr>
@@ -672,7 +672,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-2 text-right bg-blue-600 dark:bg-blue-700 border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).expense.extra.totals[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-2 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-2 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).expense.extra.totals.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -720,7 +720,7 @@ export default function MonthlyTabels() {
                                         <td className="px-3 py-3 text-right text-sm font-bold bg-blue-50 dark:bg-blue-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-blue-400 dark:border-blue-500">
                                             {formatCurrency(cat.monthlyTotals[currentMonthIndex] || 0)}
                                         </td>
-                                        <td className="px-3 py-3 text-right text-sm font-bold bg-purple-50 dark:bg-purple-900/20 text-gray-900 dark:text-gray-100 border-l-2 border-purple-400 dark:border-purple-500">
+                                        <td className="px-3 py-3 text-right text-sm font-bold bg-blue-800 dark:bg-blue-900 text-white border-l-2 border-blue-600 dark:border-blue-700">
                                             {formatCurrency(cat.monthlyTotals.reduce((sum: number, val: number) => sum + val, 0))}
                                         </td>
                                     </tr>
@@ -733,7 +733,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-2 text-right bg-blue-600 dark:bg-blue-700 border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).expense.investment.totals[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-2 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-2 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).expense.investment.totals.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -747,7 +747,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-3 text-right bg-blue-600 dark:bg-blue-700 border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).expense.totals[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).expense.totals.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -761,7 +761,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-3 text-right text-sm border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).income.totals[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).income.totals.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -774,7 +774,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-3 text-right text-sm border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency((monthlyData as MonthlyData).expenseBreakdown.investment[currentMonthIndex] || 0)}
                                     </td>
-                                    <td className="px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency((monthlyData as MonthlyData).expenseBreakdown.investment.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -787,7 +787,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-3 text-right text-sm border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency(-((monthlyData as MonthlyData).expenseBreakdown.fixed[currentMonthIndex] || 0))}
                                     </td>
-                                    <td className="px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency(-(monthlyData as MonthlyData).expenseBreakdown.fixed.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -800,7 +800,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-3 text-right text-sm border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency(-((monthlyData as MonthlyData).expenseBreakdown.variable[currentMonthIndex] || 0))}
                                     </td>
-                                    <td className="px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency(-(monthlyData as MonthlyData).expenseBreakdown.variable.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -813,7 +813,7 @@ export default function MonthlyTabels() {
                                     <td className="px-3 py-3 text-right text-sm border-l-2 border-blue-400 dark:border-blue-500">
                                         {formatCurrency(-((monthlyData as MonthlyData).expenseBreakdown.extra[currentMonthIndex] || 0))}
                                     </td>
-                                    <td className="px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500">
+                                    <td className="px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700">
                                         {formatCurrency(-(monthlyData as MonthlyData).expenseBreakdown.extra.reduce((sum: number, val: number) => sum + val, 0))}
                                     </td>
                                 </tr>
@@ -842,7 +842,7 @@ export default function MonthlyTabels() {
                                         const yearlyTotal = (monthlyData as MonthlyData).balance.reduce((sum: number, val: number) => sum + val, 0);
                                         const isPositive = yearlyTotal >= 0;
                                         return (
-                                            <td className={`px-3 py-3 text-right bg-purple-600 dark:bg-purple-700 border-l-2 border-purple-400 dark:border-purple-500 ${isPositive ? 'text-green-300' : 'text-red-300'}`}>
+                                            <td className={`px-3 py-3 text-right bg-blue-800 dark:bg-blue-900 border-l-2 border-blue-600 dark:border-blue-700 ${isPositive ? 'text-green-300' : 'text-red-300'}`}>
                                                 {formatCurrency(yearlyTotal)}
                                             </td>
                                         );
